@@ -1,0 +1,216 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Railway Reservation | RailEase</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="navbar">
+    <a href="#" class="brand">
+        <span class="brand-icon">R</span>
+        <span>RailEase<small>RAILWAY RESERVATION</small></span>
+    </a>
+    <span class="system-status"><span class="dot"></span> Reservation System</span>
+</header>
+
+<main class="container">
+    <section class="hero">
+        <div>
+            <span class="eyebrow">TRAVEL SMARTER</span>
+            <h1>Your journey,<br>made <span>simpler.</span></h1>
+            <p>Book tickets, manage passengers, and keep every journey organized in one place.</p>
+        </div>
+        <div class="hero-art">
+            <div class="track"></div>
+            <div class="train">🚆</div>
+            <div class="station station-one">Departure</div>
+            <div class="station station-two">Destination</div>
+        </div>
+    </section>
+
+    <section class="stats">
+        <article class="stat-card">
+            <span class="stat-label">Confirmed Tickets</span>
+            <strong id="confirmedCount">0</strong>
+            <span class="stat-note">Active reservations</span>
+        </article>
+        <article class="stat-card">
+            <span class="stat-label">Waiting List</span>
+            <strong id="waitingCount">0</strong>
+            <span class="stat-note">Awaiting confirmation</span>
+        </article>
+        <article class="stat-card">
+            <span class="stat-label">Available Seats</span>
+            <strong id="availableCount">3</strong>
+            <span class="stat-note">Ready for booking</span>
+        </article>
+        <article class="stat-card">
+            <span class="stat-label">Cancelled Tickets</span>
+            <strong id="cancelledCount">0</strong>
+            <span class="stat-note">Cancellation history</span>
+        </article>
+    </section>
+
+    <section class="content-grid">
+        <article class="panel booking-panel">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">NEW RESERVATION</span>
+                    <h2>Book a ticket</h2>
+                </div>
+                <span class="step-badge">01</span>
+            </div>
+
+            <form id="bookingForm">
+                <div class="form-group">
+                    <label for="passengerName">Passenger name</label>
+                    <input id="passengerName" type="text"
+                           placeholder="Enter full name" maxlength="80" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="passengerAge">Age</label>
+                    <input id="passengerAge" type="number"
+                           placeholder="Enter age" min="1" max="120" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="source">From</label>
+                        <input id="source" type="text"
+                               placeholder="Departure station" maxlength="80" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="destination">To</label>
+                        <input id="destination" type="text"
+                               placeholder="Arrival station" maxlength="80" required>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" type="submit">
+                    + Book Ticket
+                </button>
+                <p class="form-hint">Full train? You will be added to the waiting list.</p>
+            </form>
+        </article>
+
+        <article class="panel search-panel">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">QUICK LOOKUP</span>
+                    <h2>Find a ticket</h2>
+                </div>
+                <span class="step-badge">02</span>
+            </div>
+            <p class="muted">Search using a passenger's unique ticket ID.</p>
+            <form id="searchForm" class="search-form">
+                <input id="searchId" type="number" min="1001"
+                       placeholder="e.g. 1001" required>
+                <button class="btn btn-dark" type="submit">Search</button>
+            </form>
+            <div id="searchResult" class="search-result empty-state">
+                Your search result will appear here.
+            </div>
+
+            <div class="capacity-box">
+                <div class="capacity-top">
+                    <span>Confirmed seat capacity</span>
+                    <strong id="capacityText">0 / 3</strong>
+                </div>
+                <div class="capacity-bar">
+                    <div id="capacityFill"></div>
+                </div>
+                <p class="muted">Waiting passengers are promoted automatically when a confirmed ticket is cancelled.</p>
+            </div>
+        </article>
+    </section>
+
+    <section class="panel table-panel">
+        <div class="section-heading table-heading">
+            <div>
+                <span class="eyebrow">PASSENGER MANAGEMENT</span>
+                <h2>Confirmed passengers</h2>
+            </div>
+            <span class="count-pill" id="confirmedPill">0 passengers</span>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ticket ID</th>
+                        <th>Passenger</th>
+                        <th>Age</th>
+                        <th>Journey</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="confirmedTable"></tbody>
+            </table>
+        </div>
+        <div id="confirmedEmpty" class="table-empty">
+            <span>▤</span>
+            <p>No confirmed passengers yet.</p>
+            <small>Use the booking form to make your first reservation.</small>
+        </div>
+    </section>
+
+    <section class="panel table-panel">
+        <div class="section-heading table-heading">
+            <div>
+                <span class="eyebrow">FIFO QUEUE</span>
+                <h2>Waiting list</h2>
+            </div>
+            <span class="count-pill" id="waitingPill">0 waiting</span>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ticket ID</th>
+                        <th>Passenger</th>
+                        <th>Age</th>
+                        <th>Journey</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="waitingTable"></tbody>
+            </table>
+        </div>
+        <div id="waitingEmpty" class="table-empty">
+            <span>✓</span>
+            <p>The waiting list is empty.</p>
+            <small>New passengers will appear here when all seats are occupied.</small>
+        </div>
+    </section>
+
+    <section class="panel history-panel">
+        <div class="section-heading">
+            <div>
+                <span class="eyebrow">LIFO STACK</span>
+                <h2>Recently cancelled tickets</h2>
+            </div>
+            <span class="count-pill" id="cancelledPill">0 records</span>
+        </div>
+        <div id="cancelledList" class="cancelled-list"></div>
+        <div id="cancelledEmpty" class="table-empty">
+            <p>No cancellation history available.</p>
+        </div>
+    </section>
+
+    <footer>
+        <span>RailEase · Railway Reservation System</span>
+        <span>Academic Data Structures Project</span>
+    </footer>
+</main>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
